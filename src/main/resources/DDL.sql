@@ -48,3 +48,6 @@ create table product
 );
 alter table product
     owner to postgres;
+
+alter table users
+    alter column password type varchar(100)
