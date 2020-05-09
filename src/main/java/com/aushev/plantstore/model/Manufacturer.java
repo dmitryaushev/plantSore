@@ -2,23 +2,34 @@ package com.aushev.plantstore.model;
 
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Table(name = "manufacturer")
 @Component
 public class Manufacturer {
 
-    private String id;
+    private UUID id;
     private String title;
-    private Product product;
+    private List<Product> products;
 
-    public String getId() {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
+    @Column(name = "title")
     public String getTitle() {
         return title;
     }
@@ -27,12 +38,13 @@ public class Manufacturer {
         this.title = title;
     }
 
-    public Product getProduct() {
-        return product;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "manufacturer")
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override
@@ -42,11 +54,11 @@ public class Manufacturer {
         Manufacturer that = (Manufacturer) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(title, that.title) &&
-                Objects.equals(product, that.product);
+                Objects.equals(products, that.products);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, product);
+        return Objects.hash(id, title, products);
     }
 }

@@ -2,26 +2,36 @@ package com.aushev.plantstore.model;
 
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 import java.util.Objects;
+import java.util.UUID;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Table(name = "users")
 @Component
 public class User {
 
-    private String id;
+    private UUID id;
     private String email;
     private String password;
     private String firstName;
     private String lastName;
     private Role role;
 
-    public String getId() {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
+    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -30,6 +40,7 @@ public class User {
         this.email = email;
     }
 
+    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -38,6 +49,7 @@ public class User {
         this.password = password;
     }
 
+    @Column(name = "first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -46,6 +58,7 @@ public class User {
         this.firstName = firstName;
     }
 
+    @Column(name = "last_name")
     public String getLastName() {
         return lastName;
     }
@@ -54,6 +67,7 @@ public class User {
         this.lastName = lastName;
     }
 
+    @ManyToOne
     public Role getRole() {
         return role;
     }

@@ -2,22 +2,32 @@ package com.aushev.plantstore.model;
 
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 import java.util.Objects;
+import java.util.UUID;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Table(name = "role")
 @Component
 public class Role {
 
-    private String id;
+    private UUID id;
     private String role;
 
-    public String getId() {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
+    @Column(name = "title")
     public String getRole() {
         return role;
     }

@@ -2,25 +2,35 @@ package com.aushev.plantstore.model;
 
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Table(name = "product")
 @Component
 public class Product {
 
-    private String id;
+    private UUID id;
     private String title;
     private BigDecimal price;
     private Manufacturer manufacturer;
 
-    public String getId() {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
+    @Column(name = "title")
     public String getTitle() {
         return title;
     }
@@ -29,6 +39,7 @@ public class Product {
         this.title = title;
     }
 
+    @Column(name = "price")
     public BigDecimal getPrice() {
         return price;
     }
@@ -37,6 +48,7 @@ public class Product {
         this.price = price;
     }
 
+    @ManyToOne
     public Manufacturer getManufacturer() {
         return manufacturer;
     }
