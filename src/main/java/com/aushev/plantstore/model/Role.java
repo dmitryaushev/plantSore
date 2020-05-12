@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.GenerationType.AUTO;
 
 @Entity
 @Table(name = "role")
@@ -17,7 +17,7 @@ public class Role {
     private String role;
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = AUTO)
     @Column(name = "id")
     public UUID getId() {
         return id;

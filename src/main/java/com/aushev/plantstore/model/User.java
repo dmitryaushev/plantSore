@@ -3,10 +3,12 @@ package com.aushev.plantstore.model;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 import java.util.UUID;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.GenerationType.AUTO;
 
 @Entity
 @Table(name = "users")
@@ -21,7 +23,7 @@ public class User {
     private Role role;
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = AUTO)
     @Column(name = "id")
     public UUID getId() {
         return id;
@@ -31,6 +33,8 @@ public class User {
         this.id = id;
     }
 
+    @Email
+    @NotEmpty
     @Column(name = "email")
     public String getEmail() {
         return email;
@@ -40,6 +44,7 @@ public class User {
         this.email = email;
     }
 
+    @NotEmpty
     @Column(name = "password")
     public String getPassword() {
         return password;
@@ -49,6 +54,7 @@ public class User {
         this.password = password;
     }
 
+    @NotEmpty
     @Column(name = "first_name")
     public String getFirstName() {
         return firstName;
@@ -58,6 +64,7 @@ public class User {
         this.firstName = firstName;
     }
 
+    @NotEmpty
     @Column(name = "last_name")
     public String getLastName() {
         return lastName;

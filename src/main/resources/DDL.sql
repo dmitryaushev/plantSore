@@ -50,4 +50,20 @@ alter table product
     owner to postgres;
 
 alter table users
-    alter column password type varchar(100)
+    alter column password type varchar(100);
+
+create extension "uuid-ossp";
+
+alter table users
+    alter column id set default uuid_generate_v4();
+
+alter table manufacturer
+    alter column id set default uuid_generate_v4();
+
+alter table product
+    alter column id set default uuid_generate_v4();
+
+alter table role
+    alter column id set default uuid_generate_v4();
+
+
