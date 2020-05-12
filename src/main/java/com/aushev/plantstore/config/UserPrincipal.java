@@ -54,4 +54,12 @@ public class UserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public String getId() {
+        return this.user.getId().toString();
+    }
+
+    public String getName() {
+        return String.format("%s %s", this.user.getFirstName(), this.user.getLastName());
+    }
 }

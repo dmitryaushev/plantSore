@@ -1,4 +1,4 @@
-package com.aushev.plantstore;
+package com.aushev.plantstore.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,26 +9,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Objects;
 
 @Controller
-@RequestMapping(path = "/")
+@RequestMapping("/")
 public class MainController {
 
-    @GetMapping(path = "/index")
+    @GetMapping("/index")
     public String doGet() {
         return "index";
     }
 
-    @PostMapping(path = "/index")
+    @PostMapping("/index")
     public String doPost() {
         return "index";
     }
 
-    @GetMapping(path = "/login")
+    @GetMapping("/login")
     public String login(Model model, String error, String logout) {
 
         if (Objects.nonNull(error)) {
             model.addAttribute("error", "Your username and password is invalid.");
         }
-        if (Objects.nonNull(logout)){
+        if (Objects.nonNull(logout)) {
             model.addAttribute("message", "You have been logged out successfully");
         }
         return "login";
