@@ -3,6 +3,7 @@ package com.aushev.plantstore.model;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -29,6 +30,7 @@ public class Manufacturer {
         this.id = id;
     }
 
+    @NotEmpty
     @Column(name = "title")
     public String getTitle() {
         return title;
