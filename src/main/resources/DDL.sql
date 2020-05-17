@@ -66,4 +66,8 @@ alter table product
 alter table role
     alter column id set default uuid_generate_v4();
 
+alter table product
+    alter column title type varchar(100);
 
+alter table manufacturer
+    alter column title type varchar(100);

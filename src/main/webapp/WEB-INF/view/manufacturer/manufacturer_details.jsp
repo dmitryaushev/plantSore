@@ -25,9 +25,8 @@
             <c:choose>
                 <c:when test="${not empty manufacturer.products}">
                     <c:forEach items="${manufacturer.products}" var="product">
-                        <li><a href="${pageContext.request.contextPath}/product/get?id=${product.id}"
-                               class="button" role="button" tabindex="0">${product.title}</a><br>
-                        </li>
+                        <a href="${pageContext.request.contextPath}/plant/get?id=${product.id}">
+                                ${product.title}</a><br>
                     </c:forEach>
                 </c:when>
                 <c:otherwise>

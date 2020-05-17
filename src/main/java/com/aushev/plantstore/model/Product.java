@@ -3,6 +3,7 @@ package com.aushev.plantstore.model;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
@@ -30,6 +31,7 @@ public class Product {
         this.id = id;
     }
 
+    @NotEmpty
     @Column(name = "title")
     public String getTitle() {
         return title;
@@ -39,6 +41,9 @@ public class Product {
         this.title = title;
     }
 
+    @NotNull
+    @DecimalMin(value = "0.01")
+    @Digits(integer = 4, fraction = 2)
     @Column(name = "price")
     public BigDecimal getPrice() {
         return price;
@@ -48,6 +53,7 @@ public class Product {
         this.price = price;
     }
 
+    @NotNull
     @ManyToOne
     public Manufacturer getManufacturer() {
         return manufacturer;

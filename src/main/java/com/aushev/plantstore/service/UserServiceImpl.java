@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(User user) {
 
-        if (emailExist(user.getEmail())) {
+        if (Objects.nonNull(userExist(user.getEmail()))) {
             throw new UserAlreadyExistsException(String.format("User with email %s already exist", user.getEmail()));
         }
 
@@ -63,17 +63,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
 
-        UUID id = user.getId();
-        User checkUser = null;
-        try {
-            checkUser = findUser(user.getEmail());
-        } catch (UserNotExistException e) {
-        }
+        User checkUser = userExist(user.getEmail());
 
-        if (Objects.nonNull(checkUser) && !checkUser.getId().equals(id)) {
+        if (Objects.nonNull(checkUser) && !checkUser.getId().equals(user.getId())) {
             throw new UserAlreadyExistsException(String.format("User with email %s already exist", user.getEmail()));
         }
-
         userRepository.save(user);
     }
 
@@ -82,7 +76,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    private boolean emailExist(String email) {
-        return userRepository.findUserByEmail(email).isPresent();
+    private User userExist(String email) {
+        return userRepository.findUserByEmail(email).orElse(null);
     }
 }
