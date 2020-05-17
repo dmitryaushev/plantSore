@@ -55,15 +55,17 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/createUser")
-    public String showCreateUserPage() {
+    public String showCreateUserPage(Model model) {
+        model.addAttribute("roles", userService.getAllUserRoles());
         return "user/create_user";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
-    public String createUser(@Valid User user, BindingResult result, Model model) {
+    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
+            model.addAttribute("roles", userService.getAllUserRoles());
             return "user/create_user";
         }
 
@@ -71,6 +73,7 @@ public class UserController {
             userService.createUser(user);
             return "user/user_details";
         } catch (UserAlreadyExistsException e) {
+            model.addAttribute("roles", userService.getAllUserRoles());
             model.addAttribute("message", e.getMessage());
             return "user/create_user";
         }
@@ -79,6 +82,7 @@ public class UserController {
     @GetMapping("/edit")
     public String showEditUserPage(@RequestParam("id") UUID id, Model model) {
         model.addAttribute("user", userService.findUser(id));
+        model.addAttribute("roles", userService.getAllUserRoles());
         return "user/edit_user";
     }
 
@@ -87,6 +91,7 @@ public class UserController {
                            BindingResult result, Model model) {
 
         if (result.hasErrors()) {
+            model.addAttribute("roles", userService.getAllUserRoles());
             return "user/edit_user";
         }
 
@@ -94,6 +99,7 @@ public class UserController {
             userService.updateUser(user);
             return "user/user_details";
         } catch (UserAlreadyExistsException e) {
+            model.addAttribute("roles", userService.getAllUserRoles());
             model.addAttribute("message", e.getMessage());
             return "user/edit_user";
         }

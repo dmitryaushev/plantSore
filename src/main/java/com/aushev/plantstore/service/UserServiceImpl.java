@@ -2,6 +2,7 @@ package com.aushev.plantstore.service;
 
 import com.aushev.plantstore.exception.UserAlreadyExistsException;
 import com.aushev.plantstore.exception.UserNotExistException;
+import com.aushev.plantstore.model.Role;
 import com.aushev.plantstore.model.User;
 import com.aushev.plantstore.repository.RoleRepository;
 import com.aushev.plantstore.repository.UserRepository;
@@ -55,7 +56,9 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException(String.format("User with email %s already exist", user.getEmail()));
         }
 
-        user.setRole(roleRepository.findByRole("ROLE_USER"));
+        if (Objects.isNull(user.getRole())) {
+            user.setRole(roleRepository.findByRole("ROLE_USER"));
+        }
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -74,6 +77,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Role> getAllUserRoles() {
+        return roleRepository.findAll();
     }
 
     private User userExist(String email) {

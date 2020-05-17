@@ -1,5 +1,6 @@
 package com.aushev.plantstore.service;
 
+import com.aushev.plantstore.model.Role;
 import com.aushev.plantstore.model.User;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface UserService {
     void updateUser(User user);
 
     void deleteUser(UUID id);
+
+    List<Role> getAllUserRoles();
 }

@@ -49,6 +49,14 @@
             <form:errors path="password" cssClass="error"/>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p>Role</p>
+        </td>
+        <td>
+            <form:select path="role" items="${roles}" itemValue="id" itemLabel="role"/>
+        </td>
+    </tr>
 </table>
 <button type="submit" class="button">Create</button>
 <div class="spacer"></div>

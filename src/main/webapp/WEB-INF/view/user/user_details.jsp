@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
@@ -13,6 +14,9 @@
     <tr>
         <th>Full name</th>
         <th>Email</th>
+        <security:authorize access="hasRole('ROLE_ADMIN')">
+            <th>Role</th>
+        </security:authorize>
     </tr>
     </thead>
     <tbody>
@@ -23,6 +27,11 @@
         <td>
             ${user.email}
         </td>
+        <security:authorize access="hasRole('ROLE_ADMIN')">
+            <td>
+                    ${user.role.role}
+            </td>
+        </security:authorize>
     </tr>
     </tbody>
 </table>
