@@ -1,6 +1,5 @@
 package com.aushev.plantstore.controller;
 
-import com.aushev.plantstore.exception.ProductAlreadyExistException;
 import com.aushev.plantstore.exception.ProductNotExistException;
 import com.aushev.plantstore.model.Product;
 import com.aushev.plantstore.service.ManufacturerService;
@@ -33,13 +32,13 @@ public class ProductController {
     }
 
     @GetMapping("/showPlants")
-    public String getAllProducts(Model model){
+    public String getAllProducts(Model model) {
         model.addAttribute("products", productService.findAllProduct());
         return "product/show_products";
     }
 
     @GetMapping("/get")
-    public String getProduct(@RequestParam("id")UUID id, Model model) {
+    public String getProduct(@RequestParam("id") UUID id, Model model) {
         model.addAttribute("product", productService.findProduct(id));
         return "product/product_details";
     }
@@ -70,19 +69,12 @@ public class ProductController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public String createProduct(@ModelAttribute("product") @Valid Product product, BindingResult result, Model model) {
-
         if (result.hasErrors()) {
             model.addAttribute("manufacturers", manufacturerService.findAllManufacturers());
             return "product/create_product";
         }
-        try {
-            productService.creatProduct(product);
-            return "product/product_details";
-        } catch (ProductAlreadyExistException e) {
-            model.addAttribute("message", e.getMessage());
-            model.addAttribute("manufacturers", manufacturerService.findAllManufacturers());
-            return "product/create_product";
-        }
+        productService.creatProduct(product);
+        return "product/product_details";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -96,19 +88,12 @@ public class ProductController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/editProduct")
     public String editProduct(@ModelAttribute("product") @Valid Product product, BindingResult result, Model model) {
-
         if (result.hasErrors()) {
             model.addAttribute("manufacturers", manufacturerService.findAllManufacturers());
             return "product/edit_product";
         }
-        try {
-            productService.updateProduct(product);
-            return "product/product_details";
-        } catch (ProductAlreadyExistException e) {
-            model.addAttribute("message", e.getMessage());
-            model.addAttribute("manufacturers", manufacturerService.findAllManufacturers());
-            return "product/edit_product";
-        }
+        productService.updateProduct(product);
+        return "product/product_details";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -1,6 +1,5 @@
 package com.aushev.plantstore.controller;
 
-import com.aushev.plantstore.exception.UserAlreadyExistsException;
 import com.aushev.plantstore.exception.UserNotExistException;
 import com.aushev.plantstore.model.User;
 import com.aushev.plantstore.service.UserService;
@@ -38,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/findUser")
-    public String showFindUserPage(){
+    public String showFindUserPage() {
         return "user/find_user";
     }
 
@@ -63,20 +62,12 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public String createUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
-
         if (result.hasErrors()) {
             model.addAttribute("roles", userService.getAllUserRoles());
             return "user/create_user";
         }
-
-        try {
-            userService.createUser(user);
-            return "user/user_details";
-        } catch (UserAlreadyExistsException e) {
-            model.addAttribute("roles", userService.getAllUserRoles());
-            model.addAttribute("message", e.getMessage());
-            return "user/create_user";
-        }
+        userService.createUser(user);
+        return "user/user_details";
     }
 
     @GetMapping("/edit")
@@ -87,22 +78,13 @@ public class UserController {
     }
 
     @PostMapping("/editUser")
-    public String editUser(@ModelAttribute("user") @Valid User user,
-                           BindingResult result, Model model) {
-
+    public String editUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("roles", userService.getAllUserRoles());
             return "user/edit_user";
         }
-
-        try {
-            userService.updateUser(user);
-            return "user/user_details";
-        } catch (UserAlreadyExistsException e) {
-            model.addAttribute("roles", userService.getAllUserRoles());
-            model.addAttribute("message", e.getMessage());
-            return "user/edit_user";
-        }
+        userService.updateUser(user);
+        return "user/user_details";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -118,19 +100,12 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String registrationUser(@Valid User user, BindingResult result, Model model) {
-
+    public String registrationUser(@Valid User user, BindingResult result) {
         if (result.hasErrors()) {
             return "registration";
         }
-
-        try {
-            userService.createUser(user);
-            return "redirect:/login";
-        } catch (UserAlreadyExistsException e) {
-            model.addAttribute("message", e.getMessage());
-            return "registration";
-        }
+        userService.createUser(user);
+        return "redirect:/login";
     }
 
     @ModelAttribute("user")

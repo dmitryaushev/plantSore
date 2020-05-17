@@ -18,4 +18,6 @@ public interface ProductService {
     void updateProduct(Product product);
 
     void deleteProduct(UUID id);
+
+    Product productExist(String title);
 }

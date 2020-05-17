@@ -1,5 +1,6 @@
 package com.aushev.plantstore.model;
 
+import com.aushev.plantstore.config.EntityExist;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 import static javax.persistence.GenerationType.AUTO;
 
+@EntityExist(entity = "product")
 @Entity
 @Table(name = "product")
 @Component

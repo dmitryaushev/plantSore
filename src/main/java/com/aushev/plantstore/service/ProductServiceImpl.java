@@ -1,6 +1,5 @@
 package com.aushev.plantstore.service;
 
-import com.aushev.plantstore.exception.ProductAlreadyExistException;
 import com.aushev.plantstore.exception.ProductNotExistException;
 import com.aushev.plantstore.model.Product;
 import com.aushev.plantstore.repository.ProductRepository;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -40,23 +38,11 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void creatProduct(Product product) {
-
-        if (Objects.nonNull(productExist(product.getTitle()))) {
-            throw new ProductAlreadyExistException(
-                    String.format("Product with title %s already exist", product.getTitle()));
-        }
         productRepository.save(product);
     }
 
     @Override
     public void updateProduct(Product product) {
-
-        Product checkProduct = productExist(product.getTitle());
-
-        if (Objects.nonNull(checkProduct) && !checkProduct.getId().equals(product.getId())) {
-            throw new ProductAlreadyExistException(
-                    String.format("Product with title %s already exist", product.getTitle()));
-        }
         productRepository.save(product);
     }
 
@@ -65,7 +51,8 @@ public class ProductServiceImpl implements ProductService{
         productRepository.deleteById(id);
     }
 
-    private Product productExist(String title) {
+    @Override
+    public Product productExist(String title) {
         return productRepository.findByTitle(title).orElse(null);
     }
 }

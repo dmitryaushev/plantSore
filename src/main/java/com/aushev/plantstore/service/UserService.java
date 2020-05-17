@@ -21,4 +21,6 @@ public interface UserService {
     void deleteUser(UUID id);
 
     List<Role> getAllUserRoles();
+
+    User userExist(String email);
 }

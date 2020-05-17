@@ -1,6 +1,5 @@
 package com.aushev.plantstore.controller;
 
-import com.aushev.plantstore.exception.ManufacturerAlreadyExistException;
 import com.aushev.plantstore.exception.ManufacturerNotExistException;
 import com.aushev.plantstore.model.Manufacturer;
 import com.aushev.plantstore.service.ManufacturerService;
@@ -61,18 +60,12 @@ public class ManufacturerController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
-    public String createManufacturer(@Valid Manufacturer manufacturer, BindingResult result, Model model) {
-
+    public String createManufacturer(@Valid Manufacturer manufacturer, BindingResult result) {
         if (result.hasErrors()) {
             return "manufacturer/create_manufacturer";
         }
-        try {
-            manufacturerService.createManufacturer(manufacturer);
-            return "manufacturer/manufacturer_details";
-        } catch (ManufacturerAlreadyExistException e) {
-            model.addAttribute("message", e.getMessage());
-            return "manufacturer/create_manufacturer";
-        }
+        manufacturerService.createManufacturer(manufacturer);
+        return "manufacturer/manufacturer_details";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -84,17 +77,12 @@ public class ManufacturerController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/editManufacturer")
-    public String editManufacturer(@Valid Manufacturer manufacturer, BindingResult result, Model model) {
+    public String editManufacturer(@Valid Manufacturer manufacturer, BindingResult result) {
         if (result.hasErrors()) {
             return "manufacturer/edit_manufacturer";
         }
-        try {
-            manufacturerService.updateManufacturer(manufacturer);
-            return "manufacturer/manufacturer_details";
-        } catch (ManufacturerAlreadyExistException e) {
-            model.addAttribute("message", e.getMessage());
-            return "manufacturer/edit_manufacturer";
-        }
+        manufacturerService.updateManufacturer(manufacturer);
+        return "manufacturer/manufacturer_details";
     }
 
     @PreAuthorize(("hasRole('ROLE_ADMIN')"))

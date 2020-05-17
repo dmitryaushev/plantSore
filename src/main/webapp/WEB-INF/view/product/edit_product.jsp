@@ -41,7 +41,7 @@
                         }
                     }
                 </script>
-                <form:errors path="title" cssClass="error"/>
+                <form:errors path="price" cssClass="error"/>
             </td>
         </tr>
         </tr>

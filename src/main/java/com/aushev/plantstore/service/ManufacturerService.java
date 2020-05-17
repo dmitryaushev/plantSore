@@ -18,4 +18,6 @@ public interface ManufacturerService {
     void updateManufacturer(Manufacturer manufacturer);
 
     void deleteManufacturer(UUID id);
+
+    Manufacturer manufacturerExist(String title);
 }

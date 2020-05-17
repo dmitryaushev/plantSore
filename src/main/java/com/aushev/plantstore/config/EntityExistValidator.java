@@ -1,5 +1,8 @@
 package com.aushev.plantstore.config;
 
+import com.aushev.plantstore.model.Manufacturer;
+import com.aushev.plantstore.model.Product;
+import com.aushev.plantstore.model.User;
 import com.aushev.plantstore.repository.ManufacturerRepository;
 import com.aushev.plantstore.repository.ProductRepository;
 import com.aushev.plantstore.repository.UserRepository;
@@ -10,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Objects;
+import java.util.UUID;
 
-public class EntityExistValidator implements ConstraintValidator<EntityExist, String> {
+public class EntityExistValidator implements ConstraintValidator<EntityExist, Object> {
 
     private UserService userService;
     private ProductService productService;
@@ -37,14 +42,51 @@ public class EntityExistValidator implements ConstraintValidator<EntityExist, St
         entity = constraint.entity();
     }
 
-    public boolean isValid(String title, ConstraintValidatorContext context) {
+    public boolean isValid(Object object, ConstraintValidatorContext context) {
+
         switch (entity) {
-            case "product":
-                return productService.productExist(title);
-            case "manufacturer":
-                return manufacturerService.manufacturerExist(title);
-            case "user":
-                return userService.userExist(title);
+            case "user": {
+                User user = (User) object;
+                UUID id = user.getId();
+                User existUser = userService.userExist(user.getEmail());
+                if (Objects.nonNull(id) && Objects.nonNull(existUser) && existUser.getId().equals(id)) {
+                    return true;
+                }
+                if (Objects.nonNull(existUser)) {
+                    context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                            .addPropertyNode("email").addConstraintViolation();
+                    return false;
+                }
+                return true;
+            }
+            case "product": {
+                Product product = (Product) object;
+                UUID id = product.getId();
+                Product productExist = productService.productExist(product.getTitle());
+                if (Objects.nonNull(id) && Objects.nonNull(productExist) && productExist.getId().equals(id)) {
+                    return true;
+                }
+                if (Objects.nonNull(productExist)) {
+                    context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                            .addPropertyNode("title").addConstraintViolation();
+                    return false;
+                }
+                return true;
+            }
+            case "manufacturer": {
+                Manufacturer manufacturer = (Manufacturer) object;
+                UUID id = manufacturer.getId();
+                Manufacturer manufacturerExist = manufacturerService.manufacturerExist(manufacturer.getTitle());
+                if (Objects.nonNull(id) && Objects.nonNull(manufacturerExist) && manufacturerExist.getId().equals(id)) {
+                    return true;
+                }
+                if (Objects.nonNull(manufacturerExist)) {
+                    context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                            .addPropertyNode("title").addConstraintViolation();
+                    return false;
+                }
+                return true;
+            }
             default:
                 return true;
         }
