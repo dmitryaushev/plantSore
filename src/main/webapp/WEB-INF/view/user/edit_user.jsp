@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -49,7 +50,24 @@
                 <p>Role</p>
             </td>
             <td>
-                <form:select path="role" items="${roles}" itemValue="id" itemLabel="role"/>
+                <form:select path="role">
+                    <c:forEach items="${roles}" var="role">
+                        <c:choose>
+                            <c:when test="${user.role eq role}">
+                                <form:option selected="true" value="${role.id}">
+                                    <c:set var="str" value="${fn:replace(role.role, 'ROLE_', '')}"/>
+                                    ${fn:substring(str, 0, 1)}${fn:toLowerCase(fn:substring(str, 1, fn:length(str)))}
+                                </form:option>
+                            </c:when>
+                            <c:otherwise>
+                                <form:option value="${role.id}">
+                                    <c:set var="str" value="${fn:replace(role.role, 'ROLE_', '')}"/>
+                                    ${fn:substring(str, 0, 1)}${fn:toLowerCase(fn:substring(str, 1, fn:length(str)))}
+                                </form:option>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </form:select>
             </td>
         </tr>
     </security:authorize>
