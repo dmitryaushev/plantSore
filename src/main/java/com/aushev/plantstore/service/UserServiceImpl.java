@@ -1,5 +1,6 @@
 package com.aushev.plantstore.service;
 
+import com.aushev.plantstore.exception.PasswordMatchException;
 import com.aushev.plantstore.exception.UserNotExistException;
 import com.aushev.plantstore.model.Role;
 import com.aushev.plantstore.model.User;
@@ -76,5 +77,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User userExist(String email) {
         return userRepository.findUserByEmail(email).orElse(null);
+    }
+
+    @Override
+    public void changePassword(User user, String oldPassword, String newPassword) {
+
+        if (!encoder.matches(oldPassword, user.getPassword())) {
+            throw new PasswordMatchException("Wrong password");
+        }
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
     }
 }

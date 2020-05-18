@@ -42,10 +42,34 @@
 
         <spring:bind path="password">
             <div class="form-group ${status.error ? 'has-error' : ''}">
-                <form:input type="password" path="password" class="form-control" placeholder="Password"></form:input>
+                <form:input type="password" path="password" class="form-control" placeholder="Password"
+                            id="password"></form:input>
                 <form:errors path="password"></form:errors>
             </div>
         </spring:bind>
+
+        <div class="form-group">
+            <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Confirm password"
+                   required class="form-control">
+            <span id='message'></span>
+        </div>
+
+        <script>
+            var password = document.getElementById("password"),
+                confirm_password = document.getElementById("confirmNewPassword");
+
+            function validatePassword() {
+                if (password.value != confirm_password.value) {
+                    confirm_password.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirm_password.setCustomValidity('');
+                }
+            }
+
+            password.onchange = validatePassword;
+            confirm_password.onkeyup = validatePassword;
+        </script>
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     </form:form>
 </div>

@@ -1,5 +1,6 @@
 package com.aushev.plantstore.controller;
 
+import com.aushev.plantstore.exception.PasswordMatchException;
 import com.aushev.plantstore.exception.UserNotExistException;
 import com.aushev.plantstore.model.User;
 import com.aushev.plantstore.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -24,6 +26,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/showUsers")
     public String getAllUsers(Model model) {
         model.addAttribute("users", userService.findAllUser());
@@ -36,11 +39,13 @@ public class UserController {
         return "user/user_details";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/findUser")
     public String showFindUserPage() {
         return "user/find_user";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/find")
     public String findUser(@RequestParam("email") String email, Model model) {
         try {
@@ -85,6 +90,24 @@ public class UserController {
         }
         userService.updateUser(user);
         return "user/user_details";
+    }
+
+    @GetMapping("/password")
+    public String showChanePasswordPage(@RequestParam("id") UUID id, Model model) {
+        model.addAttribute("user", userService.findUser(id));
+        return "user/change_password";
+    }
+
+    @PostMapping("/changePassword")
+    public String changePassword(@ModelAttribute("user") User user, @RequestParam("oldPassword") String oldPassword,
+                                 @RequestParam("newPassword") String newPassword, Model model) {
+        try {
+            userService.changePassword(user, oldPassword, newPassword);
+            return "user/user_details";
+        } catch (PasswordMatchException e) {
+            model.addAttribute("message", e.getMessage());
+            return "user/change_password";
+        }
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
