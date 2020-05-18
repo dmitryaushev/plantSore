@@ -11,7 +11,7 @@ import java.util.UUID;
 
 import static javax.persistence.GenerationType.AUTO;
 
-@EntityExist(entity = "product")
+@EntityExist(entity = "product", message = "Product with this title already exists")
 @Entity
 @Table(name = "product")
 @Component

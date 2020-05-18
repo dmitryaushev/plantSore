@@ -11,7 +11,7 @@ import java.util.UUID;
 
 import static javax.persistence.GenerationType.AUTO;
 
-@EntityExist(entity = "user")
+@EntityExist(entity = "user", message = "User with this email already exists")
 @Entity
 @Table(name = "users")
 @Component
