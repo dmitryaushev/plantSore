@@ -88,6 +88,8 @@
                 <configuration>
                     <source>11</source>
                     <target>11</target>
+					<fork>true</fork>
+					<executable>/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home/bin/javac</executable>
                 </configuration>
             </plugin>
 		</plugins>
