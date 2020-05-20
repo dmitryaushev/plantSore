@@ -11,7 +11,10 @@ import java.lang.annotation.*;
 public @interface EntityExist {
 
     String entity();
+
     String message() default "This value already in use";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

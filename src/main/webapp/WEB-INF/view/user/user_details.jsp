@@ -30,7 +30,7 @@
         </td>
         <security:authorize access="hasRole('ROLE_ADMIN')">
             <td>
-                <c:set var="role" value="${fn:replace(user.role.role, 'ROLE_', '')}"/>
+                <c:set var="role" value="${fn:replace(user.role.title, 'ROLE_', '')}"/>
                     ${fn:substring(role, 0, 1)}${fn:toLowerCase(fn:substring(role, 1, fn:length(role)))}
             </td>
         </security:authorize>
@@ -41,5 +41,6 @@
    class="button" role="button" tabindex="0">Edit</a>
 <a href="${pageContext.request.contextPath}/user/password?id=${user.id}"
    class="button" role="button" tabindex="0">Change password</a><br>
+${message}
 </body>
 </html>

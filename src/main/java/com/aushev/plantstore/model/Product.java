@@ -4,7 +4,10 @@ import com.aushev.plantstore.config.EntityExist;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;

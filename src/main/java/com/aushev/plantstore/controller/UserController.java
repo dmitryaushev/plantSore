@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -89,6 +88,7 @@ public class UserController {
             return "user/edit_user";
         }
         userService.updateUser(user);
+        model.addAttribute("message", "Successfully");
         return "user/user_details";
     }
 
@@ -103,6 +103,7 @@ public class UserController {
                                  @RequestParam("newPassword") String newPassword, Model model) {
         try {
             userService.changePassword(user, oldPassword, newPassword);
+            model.addAttribute("message", "Successfully");
             return "user/user_details";
         } catch (PasswordMatchException e) {
             model.addAttribute("message", e.getMessage());
@@ -112,9 +113,15 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/delete")
-    public String deleteUser(@RequestParam("id") UUID id) {
-        userService.deleteUser(id);
-        return "redirect:/user/showUsers";
+    public String deleteUser(@RequestParam("id") UUID id, Model model) {
+        try {
+            userService.deleteUser(id);
+            return "redirect:/user/showUsers";
+        } catch (Exception e) {
+            model.addAttribute("user", userService.findUser(id));
+            model.addAttribute("message", e.getMessage());
+            return "user/user_details";
+        }
     }
 
     @GetMapping("/registration")

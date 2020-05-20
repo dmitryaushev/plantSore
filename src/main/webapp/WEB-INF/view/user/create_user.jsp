@@ -58,7 +58,7 @@
             <form:select path="role">
                 <c:forEach items="${roles}" var="role">
                     <form:option value="${role.id}">
-                        <c:set var="str" value="${fn:replace(role.role, 'ROLE_', '')}"/>
+                        <c:set var="str" value="${fn:replace(role.title, 'ROLE_', '')}"/>
                         ${fn:substring(str, 0, 1)}${fn:toLowerCase(fn:substring(str, 1, fn:length(str)))}
                     </form:option>
                 </c:forEach>

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
 

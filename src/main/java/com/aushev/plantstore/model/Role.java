@@ -14,7 +14,7 @@ import static javax.persistence.GenerationType.AUTO;
 public class Role {
 
     private UUID id;
-    private String role;
+    private String title;
 
     @Id
     @GeneratedValue(strategy = AUTO)
@@ -28,12 +28,12 @@ public class Role {
     }
 
     @Column(name = "title")
-    public String getRole() {
-        return role;
+    public String getTitle() {
+        return title;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -42,11 +42,11 @@ public class Role {
         if (o == null || getClass() != o.getClass()) return false;
         Role role1 = (Role) o;
         return Objects.equals(id, role1.id) &&
-                Objects.equals(role, role1.role);
+                Objects.equals(title, role1.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, role);
+        return Objects.hash(id, title);
     }
 }

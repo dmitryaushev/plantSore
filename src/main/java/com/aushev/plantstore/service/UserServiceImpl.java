@@ -1,5 +1,6 @@
 package com.aushev.plantstore.service;
 
+import com.aushev.plantstore.exception.DeleteAdminException;
 import com.aushev.plantstore.exception.PasswordMatchException;
 import com.aushev.plantstore.exception.UserNotExistException;
 import com.aushev.plantstore.model.Role;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public void createUser(User user) {
 
         if (Objects.isNull(user.getRole())) {
-            user.setRole(roleRepository.findByRole("ROLE_USER"));
+            user.setRole(roleRepository.findByTitle("ROLE_USER"));
         }
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -63,13 +64,20 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
 
         if (Objects.isNull(user.getRole())) {
-            user.setRole(roleRepository.findByRole("ROLE_USER"));
+            user.setRole(roleRepository.findByTitle("ROLE_USER"));
         }
         userRepository.save(user);
     }
 
     @Override
     public void deleteUser(UUID id) {
+
+        String role = "ROLE_ADMIN";
+        if (findUser(id).getRole().getTitle().equals(role)) {
+            if (roleRepository.findCountByRole(role) < 2) {
+                throw new DeleteAdminException("Can't delete last admin");
+            }
+        }
         userRepository.deleteById(id);
     }
 

@@ -3,7 +3,6 @@ package com.aushev.plantstore.service;
 import com.aushev.plantstore.model.Role;
 import com.aushev.plantstore.model.User;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
 
