@@ -61,6 +61,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
+
+        if (Objects.isNull(user.getRole())) {
+            user.setRole(roleRepository.findByRole("ROLE_USER"));
+        }
         userRepository.save(user);
     }
 
